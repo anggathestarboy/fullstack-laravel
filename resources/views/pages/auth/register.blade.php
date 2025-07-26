@@ -40,41 +40,85 @@
                 <form action="/register" method="POST" class="mt-4">
                     @csrf
                     <div class="flex flex-col gap-3 text-gray-800">
+
+                        <!-- First Name -->
                         <div class="flex flex-col gap-2">
                             <label class="font-medium text-sm">First Name</label>
                             <input type="text" name="firstname" placeholder="First Name"
                                 class="px-3 py-2 border border-gray-300 rounded text-sm placeholder-gray-400 
-                                focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500" />
+                                focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+                                value="{{ old('firstname') }}" />
+                            @error('firstname')
+                                <span class="text-sm text-red-500">
+                                    {{ $message == 'The firstname field is required.' ? 'Data belum terisi' : $message }}
+                                </span>
+                            @enderror
                         </div>
 
+                        <!-- Last Name -->
                         <div class="flex flex-col gap-2">
                             <label class="font-medium text-sm">Last Name</label>
                             <input type="text" name="lastname" placeholder="Last Name"
                                 class="px-3 py-2 border border-gray-300 rounded text-sm placeholder-gray-400 
-                                focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500" />
+                                focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+                                value="{{ old('lastname') }}" />
+                            @error('lastname')
+                                <span class="text-sm text-red-500">
+                                    {{ $message == 'The lastname field is required.' ? 'Data belum terisi' : $message }}
+                                </span>
+                            @enderror
                         </div>
 
+                        <!-- Username -->
                         <div class="flex flex-col gap-2">
                             <label class="font-medium text-sm">Username</label>
                             <input type="text" name="username" placeholder="Username"
                                 class="px-3 py-2 border border-gray-300 rounded text-sm placeholder-gray-400 
-                                focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500" />
+                                focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+                                value="{{ old('username') }}" />
+                            @error('username')
+                                <span class="text-sm text-red-500">
+                                    {{ $message == 'The username field is required.' ? 'Data belum terisi' : $message }}
+                                </span>
+                            @enderror
                         </div>
 
+                        <!-- Email -->
                         <div class="flex flex-col gap-2">
                             <label class="font-medium text-sm">Email</label>
                             <input type="email" name="email" placeholder="Email"
                                 class="px-3 py-2 border border-gray-300 rounded text-sm placeholder-gray-400 
-                                focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500" />
+                                focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+                                value="{{ old('email') }}" />
+                            @error('email')
+                                <span class="text-sm text-red-500">
+                                    @if ($message == 'The email field is required.')
+                                        Data belum terisi
+                                    @else
+                                        {{ $message }}
+                                    @endif
+                                </span>
+                            @enderror
                         </div>
 
+                        <!-- Password -->
                         <div class="flex flex-col gap-2">
                             <label class="font-medium text-sm">Password</label>
                             <input type="password" name="password" placeholder="Password"
                                 class="px-3 py-2 border border-gray-300 rounded text-sm placeholder-gray-400 
                                 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500" />
+                            @error('password')
+                                <span class="text-sm text-red-500">
+                                    @if ($message == 'The password field is required.')
+                                        Data belum terisi
+                                    @else
+                                        {{ $message }}
+                                    @endif
+                                </span>
+                            @enderror
                         </div>
 
+                        <!-- Tombol dan link login -->
                         <div class="flex flex-col gap-3 mt-2">
                             <button type="submit"
                                 class="px-3 py-2 bg-gray-800 rounded text-sm text-white font-medium block w-full 
