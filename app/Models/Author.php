@@ -4,8 +4,35 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
+
+
 
 class Author extends Model
 {
     use HasFactory;
+
+    protected $table = 'authors';
+    protected $primaryKey = 'author_id';
+    protected $fillable = array(
+        'author_id',
+        'author_name',
+        'author_description',
+        'created_at',
+        'updated_at'
+    );
+    protected $casts = array(
+        'author_id' => 'string',
+    );
+
+
+
+protected static function boot()
+{
+    parent::boot();
+
+    static::creating(function ($author) {
+        $author->publisher_id = Str::uuid();
+    });
+}
 }
