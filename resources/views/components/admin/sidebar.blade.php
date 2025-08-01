@@ -18,6 +18,11 @@
                 <i class="fas fa-globe"></i>
                 <span>Publisher</span>
             </a>
+             <a href="/category"
+                class="text-sm flex items-center gap-3 px-4 py-3 rounded transition-all duration-300 hover:bg-gray-200 hover:text-black">
+                <i class="fas fa-tags"></i>
+                <span>Category</span>
+            </a>
             <a href="#"
                 class="text-sm flex items-center gap-3 px-4 py-3 rounded transition-all duration-300 hover:bg-gray-200 hover:text-black">
                 <i class="fas fa-gear"></i>

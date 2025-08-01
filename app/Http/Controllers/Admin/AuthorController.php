@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthorRequest;
 
+
 class AuthorController extends Controller
 {
    public function index () {
@@ -57,7 +58,16 @@ public function delete (string $author_id) {
     } else {
         return redirect()->route('admin.author')->with('error', 'Failed to delete author data');
     }
+
+
+
 }
+
+
+
+
+
+
 
 
 }

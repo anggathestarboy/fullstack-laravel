@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -34,4 +35,14 @@ class Publisher extends Model
     {
         return self::where('publisher_id', $id)->delete();
     }
+
+
+    protected static function boot()
+{
+    parent::boot();
+
+    static::creating(function ($publisher) {
+        $publisher->publisher_id = Str::uuid();
+    });
+}
 }

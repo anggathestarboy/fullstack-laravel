@@ -5,6 +5,8 @@ use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\PublisherController;
 use App\Http\Controllers\Admin\AuthorController as AdminAuthorController;
+use App\Http\Controllers\Admin\BookController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 
 
@@ -38,4 +40,16 @@ Route::controller(AdminAuthorController::class)->group(function () {
     Route::post('/publisher/store', [PublisherController::class, 'store'])->name('admin.publisher.store');
     Route::patch('/publisher/update/{publisher_id}', [PublisherController::class, 'update'])->name('admin.publisher.update');
     Route::delete('/publisher/delete/{publisher_id}', [PublisherController::class, 'delete'])->name('admin.publisher.delete');
+
+
+    Route::controller(CategoryController::class)->group(function () {
+    Route::get('/category', 'index')->name('admin.category');
+    Route::post('/category', 'store')->name('admin.category.store');
+    Route::patch('/category/{category_id}', 'update')->name('admin.category.update');
+    Route::delete('/category/{category_id}', 'delete')->name('admin.category.delete');
+});
+
+
+
+Route::get('/book', [BookController::class, 'index']);
 

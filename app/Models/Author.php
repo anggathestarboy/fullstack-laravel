@@ -32,7 +32,7 @@ protected static function boot()
     parent::boot();
 
     static::creating(function ($author) {
-        $author->publisher_id = Str::uuid();
+        $author->author_id = Str::uuid();
     });
 }
 
