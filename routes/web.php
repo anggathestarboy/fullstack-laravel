@@ -52,4 +52,5 @@ Route::controller(AdminAuthorController::class)->group(function () {
 
 
 Route::get('/book', [BookController::class, 'index']);
+Route::post('/book', [BookController::class, 'store'])->name('admin.books.store');
 

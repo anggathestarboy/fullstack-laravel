@@ -21,3 +21,36 @@
                 </div>
   
 
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+
+  {{-- Total Penulis --}}
+    <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <p class="text-sm text-gray-500">Total Penulis</p>
+        <h2 class="text-3xl font-semibold text-gray-800">{{ $totalAuthors }}</h2>
+    </div>
+
+    {{-- Total Buku --}}
+    <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <p class="text-sm text-gray-500">Total Buku</p>
+        <h2 class="text-3xl font-semibold text-gray-800">{{ $totalBooks }}</h2>
+    </div>
+
+  
+
+    {{-- Total Pengguna --}}
+    <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <p class="text-sm text-gray-500">Total Pengguna</p>
+        <h2 class="text-3xl font-semibold text-gray-800">{{ $totalUsers }}</h2>
+    </div>
+
+    {{-- Total Peminjaman (aktifkan jika ingin) --}}
+    {{-- 
+    <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <p class="text-sm text-gray-500">Total Peminjaman</p>
+        <h2 class="text-3xl font-semibold text-gray-800">{{ $totalBorrowings }}</h2>
+    </div>
+    --}}
+</div>
+
+
+

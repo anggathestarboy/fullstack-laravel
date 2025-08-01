@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
 public function index() {
-    $loggedIn = true;
+    $loggedIn = false;
     $menus = array(
         array(
             'label' => 'Home',

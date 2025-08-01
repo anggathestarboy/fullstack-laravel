@@ -10,11 +10,10 @@
     <div class="flex-1 flex flex-col overflow-hidden">
             <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 px-4 py-4 md:px-8 md:py-8">
                 <div class="flex flex-col gap-1">
-                    <h1 class="font-semibold md:text-lg text-gray-800">Dashboard</h1>
+                    <h1 class="font-semibold md:text-lg text-gray-800">Category</h1>
                     <div class="flex items-center gap-1">
                         <p class="text-xs text-gray-400 md:text-sm">Admin</p>
                         <p class="text-xs text-gray-400 md:text-sm">/</p>
-                        <p class="text-xs text-gray-400 md:text-sm">Dashboard</p>
                         <p class="text-xs text-gray-400 md:text-sm">Category</p>
                     </div>
                 </div>
@@ -90,12 +89,12 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
                 <textarea
-                    name="_description"
+                    name="category_description"
                     rows="3"
                     placeholder="Category Description"
                     class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >{{ $category->category_description }}</textarea>
-                @error('_description')
+                @error('category_description')
                     <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                 @enderror
             </div>

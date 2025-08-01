@@ -14,6 +14,9 @@ class Author extends Model
 
     protected $table = 'authors';
     protected $primaryKey = 'author_id';
+     public $incrementing = false; // WAJIB kalau UUID
+    protected $keyType = 'string'; // Wajib juga kalau UUID
+    
     protected $fillable = array(
         'author_id',
         'author_name',
