@@ -18,12 +18,16 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+
+        use Notifiable;
+
+    protected $primaryKey = 'id';
+
+
+
+
     protected $fillable = [
-        'firstname',
-        'lastname',
-        'username',
-        'email',
-        'password',
+        'id', 'firstname', 'lastname', 'username', 'email', 'password', 'isadmin',
     ];
 
     /**

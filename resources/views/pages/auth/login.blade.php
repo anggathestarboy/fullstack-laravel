@@ -20,7 +20,8 @@
             <div class="py-6 px-4 bg-white rounded-lg border border-gray-200 w-full shadow-md">
                 <h1 class="text-center font-semibold">Library App - Login</h1>
                 <hr class="my-3 w-full bg-gray-100">
-                <form action="#" method="POST" class="mt-4">
+                <form action="/login" method="POST" class="mt-4">
+                    @csrf
                     <div class="flex flex-col gap-3">
                         <div class="flex flex-col gap-2">
                             <label class="font-medium text-sm">Username</label>
@@ -32,6 +33,12 @@
                             <input type="password" name="password" placeholder="Password"
                                 class="px-3 py-2 border border-gray-300 rounded text-sm placeholder-gray-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 invalid:border-red-500 invalid:text-red-600 focus:invalid:border-red-500 focus:invalid:ring-red-600" />
                         </div>
+                        
+    @if ($errors->any())
+        <div style="color:red;">
+            {{ $errors->first() }}
+        </div>
+    @endif
                         <div class="flex flex-col gap-3 mt-2">
                             <button
                                 class="px-3 py-2 bg-gray-800 rounded text-sm text-white font-medium block w-full transition-all duration-300">Login</button>

@@ -26,7 +26,7 @@
         <!-- CREATE BOOK FORM -->
         <div class="bg-white shadow-md rounded-lg p-6 mt-6">
             <h2 class="text-base font-semibold mb-4 text-gray-700">📚 Create Book</h2>
-            <form action="{{ route('admin.books.store') }}" method="POST">
+            <form action="{{ route('book.store') }}" method="POST">
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <input type="text" name="book_name" placeholder="Book Name" class="px-3 py-2 border rounded w-full" />
@@ -92,7 +92,7 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-100">
                         @foreach ($books as $book)
-                        <tr class="hover:bg-gray-50 cursor-pointer" onclick="document.getElementById('bookModal-{{ $book->id }}').showModal()">
+                        <tr class="hover:bg-gray-50 cursor-pointer" onclick="openModal('bookModal-{{ $book->book_id }}')">
                             <td class="px-4 py-3">{{ $loop->iteration }}</td>
                             <td class="px-4 py-3">{{ $book->book_name }}</td>
                             <td class="px-4 py-3">{{ $book->book_isbn }}</td>
@@ -104,68 +104,125 @@
                             <td class="px-4 py-3">{{ $book->shelf->shelf_name ?? '-' }}</td>
                         </tr>
 
-                        <!-- Modal Edit/Delete -->
-                        {{-- <dialog id="bookModal-{{ $book->id }}" class="modal">
-                            <div class="modal-box bg-white rounded-lg shadow-lg w-full max-w-xl p-6 mx-auto my-12">
+                        <!-- MODAL EDIT BOOK -->
+                        <dialog id="bookModal-{{ $book->book_id }}" class="modal z-50">
+                            <div class="modal-box bg-white rounded-lg shadow-lg w-11/12 max-w-xl fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4 sm:p-6">
                                 <div class="flex items-center justify-between mb-4">
-                                    <h3 class="font-semibold text-lg text-gray-800">Update Book Form</h3>
+                                    <h3 class="font-semibold text-base sm:text-lg text-gray-800">✏️ Update Book</h3>
                                     <form method="dialog">
-                                        <button type="submit" class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+                                        <button type="submit" class="text-gray-500 hover:text-gray-700 text-lg sm:text-xl">&times;</button>
                                     </form>
                                 </div>
 
-                                <form action="{{ route('pages.admin.book.edit', $book->id) }}" method="POST" class="space-y-4">
+                                <form id="updateForm-{{ $book->book_id }}" method="POST" action="{{ route('book.update', $book->book_id) }}" class="space-y-4">
                                     @csrf
-                                    @method('PUT')
+                                    @method('PATCH')
 
-                                    <input type="text" name="book_name" value="{{ $book->book_name }}" class="w-full px-3 py-2 border rounded" />
-                                    <input type="text" name="book_isbn" value="{{ $book->book_isbn }}" class="w-full px-3 py-2 border rounded" />
-                                    <input type="text" name="book_img" value="{{ $book->book_img }}" class="w-full px-3 py-2 border rounded" />
-
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <select name="book_author_id" class="w-full px-3 py-2 border rounded">
-                                            @foreach ($authors as $author)
-                                                <option value="{{ $author->id }}" @selected($book->book_author_id == $author->id)>
-                                                    {{ $author->author_name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <select name="book_category_id" class="w-full px-3 py-2 border rounded">
-                                            @foreach ($categories as $category)
-                                                <option value="{{ $category->id }}" @selected($book->book_category_id == $category->id)>
-                                                    {{ $category->category_name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <select name="book_publisher_id" class="w-full px-3 py-2 border rounded">
-                                            @foreach ($publishers as $publisher)
-                                                <option value="{{ $publisher->id }}" @selected($book->book_publisher_id == $publisher->id)>
-                                                    {{ $publisher->publisher_name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <select name="book_shelf_id" class="w-full px-3 py-2 border rounded">
-                                            @foreach ($shelves as $shelf)
-                                                <option value="{{ $shelf->id }}" @selected($book->book_shelf_id == $shelf->id)>
-                                                    {{ $shelf->shelf_name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <div class="flex justify-end gap-2">
-                                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500 transition">Update</button>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Book Name</label>
+                                            <input type="text" name="book_name" value="{{ $book->book_name }}" class="px-2 sm:px-3 py-1 sm:py-2 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base" />
+                                            @error('book_name')
+                                                <p class="text-xs sm:text-sm text-red-600 mt-1">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1">ISBN</label>
+                                            <input type="text" name="book_isbn" value="{{ $book->book_isbn }}" class="px-2 sm:px-3 py-1 sm:py-2 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base" />
+                                            @error('book_isbn')
+                                                <p class="text-xs sm:text-sm text-red-600 mt-1">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Image URL</label>
+                                            <input type="text" name="book_img" value="{{ $book->book_img }}" class="px-2 sm:px-3 py-1 sm:py-2 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base" />
+                                            @error('book_img')
+                                                <p class="text-xs sm:text-sm text-red-600 mt-1">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Description</label>
+                                            <input type="text" name="book_description" value="{{ $book->book_description }}" class="px-2 sm:px-3 py-1 sm:py-2 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base" />
+                                            @error('book_description')
+                                                <p class="text-xs sm:text-sm text-red-600 mt-1">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Stock</label>
+                                            <input type="number" name="book_stock" value="{{ $book->book_stock }}" class="px-2 sm:px-3 py-1 sm:py-2 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base" />
+                                            @error('book_stock')
+                                                <p class="text-xs sm:text-sm text-red-600 mt-1">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Author</label>
+                                            <select name="book_author_id" class="px-2 sm:px-3 py-1 sm:py-2 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base">
+                                                <option value="">-- Select Author --</option>
+                                                @foreach ($authors as $author)
+                                                    <option value="{{ $author->author_id }}" @selected($book->book_author_id == $author->author_id)>
+                                                        {{ $author->author_name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('book_author_id')
+                                                <p class="text-xs sm:text-sm text-red-600 mt-1">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Category</label>
+                                            <select name="book_category_id" class="px-2 sm:px-3 py-1 sm:py-2 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base">
+                                                <option value="">-- Select Category --</option>
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category->category_id }}" @selected($book->book_category_id == $category->category_id)>
+                                                        {{ $category->category_name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('book_category_id')
+                                                <p class="text-xs sm:text-sm text-red-600 mt-1">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Publisher</label>
+                                            <select name="book_publisher_id" class="px-2 sm:px-3 py-1 sm:py-2 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base">
+                                                <option value="">-- Select Publisher --</option>
+                                                @foreach ($publishers as $publisher)
+                                                    <option value="{{ $publisher->publisher_id }}" @selected($book->book_publisher_id == $publisher->publisher_id)>
+                                                        {{ $publisher->publisher_name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('book_publisher_id')
+                                                <p class="text-xs sm:text-sm text-red-600 mt-1">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Shelf</label>
+                                            <select name="book_shelf_id" class="px-2 sm:px-3 py-1 sm:py-2 border border-gray-300 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base">
+                                                <option value="">-- Select Shelf --</option>
+                                                @foreach ($shelves as $shelf)
+                                                    <option value="{{ $shelf->shelf_id }}" @selected($book->book_shelf_id == $shelf->shelf_id)>
+                                                        {{ $shelf->shelf_name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('book_shelf_id')
+                                                <p class="text-xs sm:text-sm text-red-600 mt-1">{{ $message }}</p>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </form>
 
-                                <form action="{{ route('admin.books.destroy', $book->id) }}" method="POST" class="mt-4 flex justify-end">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-500 transition"
-                                            onclick="return confirm('Yakin hapus buku ini?')">Delete</button>
-                                </form>
+                                <div class="flex items-center justify-end gap-2 mt-4">
+                                    <button type="submit" form="updateForm-{{ $book->book_id }}" class="px-2 sm:px-3 py-1 sm:py-2 bg-gray-800 rounded text-sm text-white font-medium transition-all duration-300">Update</button>
+                                    <form id="deleteForm-{{ $book->book_id }}" action="{{ route('book.destroy', $book->book_id) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="px-2 sm:px-3 py-1 sm:py-2 bg-red-600 rounded text-sm text-white font-medium transition-all duration-300">Delete</button>
+                                    </form>
+                                </div>
                             </div>
-                        </dialog> --}}
+                        </dialog>
                         @endforeach
                     </tbody>
                 </table>
@@ -178,13 +235,51 @@
     </main>
 </div>
 
+<!-- JavaScript to manage modal behavior -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // Auto-hide alert
         const alertBox = document.getElementById('alertBox');
         if (alertBox) {
             setTimeout(() => {
                 alertBox.style.display = 'none';
             }, 3000);
         }
+
+        // Ensure all modals are closed on page load
+        document.querySelectorAll('dialog').forEach(dialog => {
+            if (dialog.open) {
+                dialog.close();
+            }
+            dialog.removeAttribute('open');
+        });
+
+        // Function to open modal
+        window.openModal = function(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.showModal();
+            } else {
+                console.error(`Modal with ID ${modalId} not found`);
+            }
+        };
+
+        // Remove all existing click event listeners on table rows
+        document.querySelectorAll('table tr').forEach(row => {
+            const newRow = row.cloneNode(true);
+            row.parentNode.replaceChild(newRow, row);
+        });
+
+        // Re-attach click event listeners to table rows
+        document.querySelectorAll('table tr[onclick]').forEach(row => {
+            const onclickAttr = row.getAttribute('onclick');
+            row.removeAttribute('onclick');
+            row.addEventListener('click', () => {
+                eval(onclickAttr);
+            });
+        });
+
+        // Log for debugging
+        console.log('All modals closed on page load');
     });
 </script>

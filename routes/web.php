@@ -8,11 +8,11 @@ use App\Http\Controllers\Admin\AuthorController as AdminAuthorController;
 use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Auth\LoginController;
 
 
 
 Route::get('/', [HomeController::class, 'index'])->name('user.home');
-
 
 
 Route::prefix('/admin')->group(function() {
@@ -51,6 +51,18 @@ Route::controller(AdminAuthorController::class)->group(function () {
 
 
 
-Route::get('/book', [BookController::class, 'index']);
-Route::post('/book', [BookController::class, 'store'])->name('admin.books.store');
+Route::resource('book', BookController::class);
+
+
+
+
+Route::get('/login', [LoginController::class, 'loginForm'])->name('login')->middleware('guest');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+
+    Route::get('/admin', [LoginController::class, 'admin'])->middleware('auth');
+    Route::get('/student', [LoginController::class, 'student'])->middleware('auth');
+
+
 

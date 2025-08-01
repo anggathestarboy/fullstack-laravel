@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class BookRequest extends FormRequest
 {
@@ -21,16 +22,22 @@ class BookRequest extends FormRequest
      */
     public function rules(): array
     {
+        $bookId = $this->route('book'); // Ambil model Book dari route binding (kalau ada)
+
         return [
             'book_name' => 'required|string|max:255',
-            'book_isbn' => 'required|string|unique:books,book_isbn',
+            'book_isbn' => [
+                'required',
+                'string',
+                Rule::unique('books', 'book_isbn')->ignore($bookId),
+            ],
             'book_img' => 'required|string',
             'book_author_id' => 'required|exists:authors,author_id',
             'book_category_id' => 'required|exists:categories,category_id',
             'book_publisher_id' => 'required|exists:publishers,publisher_id',
             'book_shelf_id' => 'required|exists:shelfs,shelf_id',
-            'book_stock' => 'required',
-            'book_description' => 'required',
+            'book_stock' => 'required|numeric|min:0',
+            'book_description' => 'required|string',
         ];
     }
 }
