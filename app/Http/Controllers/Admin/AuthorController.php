@@ -37,7 +37,9 @@ public function update (AuthorRequest $request, string $author_id) {
         'author_name' => $request->input('author_name'),
         'author_description' => $request->input('author_description'),
     );
-    $operation = Author::where('author_id', $author_id)->update($data);
+
+
+    $operation = Author::updateAuthor($data, $author_id);
 
     if ($operation) {
         return redirect()->route('admin.author')->with('success', 'Successfully update author data');
@@ -48,7 +50,7 @@ public function update (AuthorRequest $request, string $author_id) {
 
 
 public function delete (string $author_id) {
-    $operation = Author::where('author_id', $author_id)->delete();
+   $operation = Author::deleteAuthor($author_id);
 
     if ($operation) {
         return redirect()->route('admin.author')->with('success', 'Successfully delete author data');

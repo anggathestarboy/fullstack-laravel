@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Publisher extends Model
 {
@@ -13,25 +11,27 @@ class Publisher extends Model
 
     protected $table = 'publishers';
     protected $primaryKey = 'publisher_id';
-    protected $fillable = array(
-        'publisher_id',
-        'publisher_name',
-        'publisher_description',
-        'created_at',
-        'updated_at'
-    );
-    protected $casts = array(
-        'publihser_id' => 'string',
-    );
+    public $incrementing = false;
+    protected $keyType = 'string';
+    protected $fillable = ['publisher_name', 'publisher_description'];
 
+    public static function createPublisher(array $data)
+    {
+        return self::create($data);
+    }
 
+    public static function getAllPublishersPaginated($perPage = 5)
+    {
+        return self::paginate($perPage);
+    }
 
-protected static function boot()
-{
-    parent::boot();
+    public static function updatePublisher(string $id, array $data)
+    {
+        return self::where('publisher_id', $id)->update($data);
+    }
 
-    static::creating(function ($publisher) {
-        $publisher->publisher_id = Str::uuid();
-    });
-}
+    public static function deletePublisher(string $id)
+    {
+        return self::where('publisher_id', $id)->delete();
+    }
 }

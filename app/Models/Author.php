@@ -35,4 +35,26 @@ protected static function boot()
         $author->publisher_id = Str::uuid();
     });
 }
+
+
+public static function updateAuthor (array $data, string $author_id) {
+    $author = self::where('author_id', $author_id)->first();
+
+    if ($author) {
+        $author->update($data);
+    }
+
+    return $author;
+}
+
+
+public static function deleteAuthor (string $author_id) {
+    $author = self::where('author_id', $author_id)->first();
+
+    if ($author) {
+        $author->delete();
+    }
+
+    return $author;
+}
 }

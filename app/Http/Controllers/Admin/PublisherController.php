@@ -11,7 +11,7 @@ class PublisherController extends Controller
 {
     public function index()
     {
-        $publishers = Publisher::paginate(5);
+        $publishers = Publisher::getAllPublishersPaginated(5);
 
         return view('pages.admin.publisher', [
             'publishers' => $publishers
@@ -25,7 +25,7 @@ class PublisherController extends Controller
             'publisher_description' => $request->input('publisher_description'),
         ];
 
-        $operation = Publisher::create($data);
+        $operation = Publisher::createPublisher($data);
 
         if ($operation) {
             return redirect()->route('admin.publisher')->with('success', 'Successfully created publisher data');
@@ -41,7 +41,7 @@ class PublisherController extends Controller
             'publisher_description' => $request->input('publisher_description'),
         ];
 
-        $operation = Publisher::where('publisher_id', $publisher_id)->update($data);
+        $operation = Publisher::updatePublisher($publisher_id, $data);
 
         if ($operation) {
             return redirect()->route('admin.publisher')->with('success', 'Successfully updated publisher data');
@@ -52,7 +52,7 @@ class PublisherController extends Controller
 
     public function delete(string $publisher_id)
     {
-        $operation = Publisher::where('publisher_id', $publisher_id)->delete();
+        $operation = Publisher::deletePublisher($publisher_id);
 
         if ($operation) {
             return redirect()->route('admin.publisher')->with('success', 'Successfully deleted publisher data');
