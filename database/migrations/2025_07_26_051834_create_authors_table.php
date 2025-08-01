@@ -9,6 +9,10 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+
+
+    
+    //mau copy ya????
     public function up(): void
     {
        Schema::create('authors', function (Blueprint $table) {
