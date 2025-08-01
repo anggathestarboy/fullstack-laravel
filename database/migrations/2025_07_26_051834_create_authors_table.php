@@ -9,6 +9,9 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+
+
+    //follow github dulu baru copy
     public function up(): void
     {
        Schema::create('authors', function (Blueprint $table) {
